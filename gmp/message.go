@@ -3,6 +3,7 @@ package gmp
 import (
 	"bytes"
 	"encoding/binary"
+	"log"
 )
 
 func uint64ToByte(n uint64) []byte {
@@ -70,10 +71,17 @@ type Message struct {
 	Key      string
 	TryCount uint8
 	Timeout  float64
+	Storage  *Storage
 }
 
-func NewMessage(id uint64, data []byte) *Message {
+//do job
+func (this *Message) Execute() {
+	log.Println(this)
+}
+
+func NewMessage(storage *Storage, id uint64, data []byte) *Message {
 	m := new(Message)
+	m.Storage = storage
 	buf := bytes.NewBuffer(data)
 	m.Id = id
 	m.Data = ReadString(buf)
